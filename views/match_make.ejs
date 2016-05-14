@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <title><%= title %></title>
+</head>
+<body>
+<div class="main">
+    <div class="container-fluid" style="display: table-cell;vertical-align: middle;">
+        <div class="row">
+            <div class="col-sm-4 center-col text-center">
+                <div class="panel panel-default" id="game-select">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select Game</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p id="sign" class="sign-container hidden"><span>Your sign is </span><span id="player-sign"></span></p>
+                        <p id="gamer_wait" class="sign-container hidden"></p>
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bubbleAnimation"></div>
+
+<!-- Libraries -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Core -->
+<script src="/javascripts/coffeePhysics/base.js"></script>
+<script src="/javascripts/coffeePhysics/math/Random.js"></script>
+<script src="/javascripts/coffeePhysics/math/Vector.js"></script>
+<!-- Integrators -->
+<script src="/javascripts/coffeePhysics/engine/integrator/Integrator.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/Euler.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/ImprovedEuler.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/Verlet.js"></script>
+<!-- Engine -->
+<script src="/javascripts/coffeePhysics/engine/Particle.js"></script>
+<script src="/javascripts/coffeePhysics/engine/Physics.js"></script>
+<script src="/javascripts/coffeePhysics/engine/Spring.js"></script>
+<!-- Behaviours -->
+<script src="/javascripts/coffeePhysics/behaviour/Behaviour.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Attraction.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Collision.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/ConstantForce.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/EdgeBounce.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/EdgeWrap.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Wander.js"></script>
+<!-- Demo Renderers -->
+<script src="/javascripts/coffeePhysics/demos/renderer/Renderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/CanvasRenderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/WebGLRenderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/DOMRenderer.js"></script>
+<!-- Demos -->
+<script src="/javascripts/coffeePhysics/Demo.js"></script>
+<!--Socket File-->
+<script src="/bower_components/socket.io-client/socket.io.js"></script>
+
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            var demo;
+            var renderer;
+            var continer = $('#bubbleAnimation');
+
+            function update() {
+                requestAnimationFrame(update);
+                if (demo) {
+                    demo.step();
+                }
+            }
+
+            demo = new Demo();
+            renderer = new CanvasRenderer();
+            demo.init(continer.get(0), renderer); // WebGLRenderer - CanvasRenderer
+            continer.css({"right": "0px", "position": "absolute"});
+            update();
+            setTimeout(function () {
+                $('#bubbleAnimation').css('opacity', 1);
+            }, 1);
+        });
+
+        var startGame = function () {
+            $('#game-select').addClass('go-out-box');
+            $('.main .container-fluid').css({'background': '#3a3d44'});
+            setTimeout(function () {
+                window.location.href = '/game/play';
+            }, 800);
+            e.preventDefault();
+        }
+
+        var loading = function (message) {
+            if (typeof message == 'undefined')
+                message = "Waiting for game";
+            setTimeout(function () {
+                $('div#result').html('<span>' + message + '</span><span id="dot"></span>');
+            }, 100);
+            $('div#result').removeClass('hidden');
+            var i = 0;
+            return setInterval(function () {
+                $('div#result').find('#dot').append('.');
+                if (i % 4 == 0) {
+                    $('div#result').find('#dot').html('');
+                    i = 0;
+                }
+                i++;
+            }, 300);
+        }
+
+        var load_1 = loading();
+        setTimeout(function () {
+            var socket;
+            socket = io();
+            socket.on('userSign', function (data) {
+                $('div#result').addClass('hidden');
+                clearInterval(load_1);
+                $('#sign').removeClass('hidden');
+                if (data.success) {
+                    $('#player-sign').addClass(data.sign + '-player');
+                    var load_2 = loading('Wait for other player');
+                    socket.on('gameStarted', function (data) {
+                        $('div#result').addClass('hidden');
+                        clearInterval(load_2);
+                        $('#gamer_wait').text(data.message);
+                        $('#gamer_wait').removeClass('hidden');
+                        setTimeout(function () {
+                            startGame();
+                        }, 2000);
+                    });
+                }
+                else
+                    $('#player-sign').parent('p').html(data.message);
+            });
+        }, 3600);
+    })(jQuery);
+</script>
+</body>
+</html>

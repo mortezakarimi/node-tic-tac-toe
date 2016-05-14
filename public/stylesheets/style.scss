@@ -1,0 +1,203 @@
+@import "compass";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-compass";
+@import "bootstrap-custom";
+@import "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+$game-base-color: #2e3136;
+$game-red-color: #a64242;
+$game-blue-color: #4467a7;
+$gamer-red-color: #ff5955;
+$gamer-blue-color: #5ea8ff;
+body {
+  background: lighten($game-base-color, 5%);
+  color: rgba(#FFF, 1);
+}
+
+.center-col {
+  float: none;
+  margin: auto;
+}
+
+.display-inline-block {
+  display: inline-block;
+}
+
+/* index page style */
+#bubbleAnimation {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  @include transition(opacity 3s);
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .1);
+  position: fixed;
+  display: table;
+  z-index: 1000;
+}
+
+.panel-body {
+  color: #1a1a1a;
+}
+
+.main .container-fluid {
+  @include transition(1s ease);
+}
+
+#game-select {
+  position: relative;
+  top: 0;
+  @include transition(1s ease-out);
+}
+
+.go-out-box {
+  top: 1000px !important;
+}
+
+/* end index page style */
+/* match_make page style */
+#loadingGame {
+  height: 100%;
+  width: 100%;
+  top: 30%;
+  background: rgba(0, 0, 0, .7);
+  position: fixed;
+  z-index: 100;
+}
+
+#result {
+  text-align: center;
+  width: 50%;
+  margin: auto;
+}
+
+/* end match_make page style */
+.game-container {
+  background: $game-base-color;
+}
+
+.row-game {
+  width: 100%;
+}
+
+.mainBox {
+  //background: darken(#2e3136, 10%);
+  margin: 5px;
+}
+
+.game-box {
+  background: #1e2225;
+  @include border-radius(.5em);
+  display: inline-block;
+  margin: 2px 0;
+  width: 3em;
+  height: 3em;
+  line-height: 3em;
+  &:before {
+    content: "\25EF";
+    font-weight: bold;
+    color: transparent;
+    font-size: 2em;
+  }
+}
+
+.oWin {
+  .game-box {
+    background: $game-red-color;
+  }
+}
+
+.xWin {
+  .game-box {
+    background: $game-blue-color;
+  }
+}
+
+.sign-container > span:first-child {
+  font-size: 15px;
+  line-height: 30px;
+  vertical-align: top;
+}
+
+.xPlayer {
+  &:before {
+    content: "X";
+    color: $gamer-blue-color !important;
+  }
+}
+
+.oPlayer {
+  font-weight: bold;
+  &:before {
+    content: "O";
+    color: $gamer-red-color !important;
+  }
+}
+
+#xWinMessage {
+  color: $gamer-blue-color;
+  text-align: center;
+}
+
+#oWinMessage {
+  color: $gamer-red-color;
+  text-align: center;
+}
+
+.x-player {
+  color: $gamer-blue-color;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 30px;
+  &:before {
+    content: "X";
+  }
+}
+
+.o-player {
+  color: $gamer-red-color;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 30px;
+  &:before {
+    content: "O";
+  }
+}
+
+//#sign {
+//  &.win {
+//    max-width: 100%;
+//    text-align: right;
+//  }
+//  .marquee {
+//    white-space: nowrap;
+//    @include animation(rightThenLeft 3s infinite ease-in);
+//  }
+//  @at-root {
+//    @include keyframes(rightThenLeft) {
+//      0%   {margin-right:100%;;}
+//      50%  {margin-right:0;}
+//      100% {margin-right:100%;;}
+//    }
+//  }
+//}
+
+@media (max-width: $screen-sm-min) {
+  .mainBox {
+    width: 30%;
+    margin: 5px 0;
+  }
+  .game-container {
+    width: 100%;
+  }
+  .game-box {
+    @include border-radius(2px);
+    width: 30%;
+    height: 2em;
+    line-height: 2em;
+  }
+}

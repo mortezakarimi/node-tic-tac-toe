@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <title><%= title %></title>
+</head>
+<body>
+<div class="main">
+    <div class="container-fluid" style="display: table-cell;vertical-align: middle;">
+        <div class="row">
+            <div class="col-sm-4 center-col text-center">
+                <div class="panel panel-default" id="game-select">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select Game</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <br>
+                            <p><a id="tik-tak-toe" class="btn btn-primary btn-lg btn-block">Tik Tak Toe</a></p><br>
+                            <p><a class="btn btn-primary btn-lg btn-block">Coming Soon...</a></p>
+                            <br>
+                        </div>
+                        <div class="col-md-6">
+                            <br>
+                            <p><a class="btn btn-primary btn-lg btn-block">Coming Soon...</a></p>
+                            <br>
+                            <p><a class="btn btn-primary btn-lg btn-block">Coming Soon...</a></p>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="bubbleAnimation"></div>
+
+<!-- Libraries -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Core -->
+<script src="/javascripts/coffeePhysics/base.js"></script>
+<script src="/javascripts/coffeePhysics/math/Random.js"></script>
+<script src="/javascripts/coffeePhysics/math/Vector.js"></script>
+<!-- Integrators -->
+<script src="/javascripts/coffeePhysics/engine/integrator/Integrator.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/Euler.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/ImprovedEuler.js"></script>
+<script src="/javascripts/coffeePhysics/engine/integrator/Verlet.js"></script>
+<!-- Engine -->
+<script src="/javascripts/coffeePhysics/engine/Particle.js"></script>
+<script src="/javascripts/coffeePhysics/engine/Physics.js"></script>
+<script src="/javascripts/coffeePhysics/engine/Spring.js"></script>
+<!-- Behaviours -->
+<script src="/javascripts/coffeePhysics/behaviour/Behaviour.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Attraction.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Collision.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/ConstantForce.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/EdgeBounce.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/EdgeWrap.js"></script>
+<script src="/javascripts/coffeePhysics/behaviour/Wander.js"></script>
+<!-- Demo Renderers -->
+<script src="/javascripts/coffeePhysics/demos/renderer/Renderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/CanvasRenderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/WebGLRenderer.js"></script>
+<script src="/javascripts/coffeePhysics/demos/renderer/DOMRenderer.js"></script>
+<!-- Demos -->
+<script src="/javascripts/coffeePhysics/Demo.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            var demo;
+            var renderer;
+            var continer = $('#bubbleAnimation');
+
+            function update() {
+                requestAnimationFrame(update);
+                if (demo) {
+                    demo.step();
+                }
+            }
+
+            demo = new Demo();
+            renderer = new CanvasRenderer();
+            demo.init(continer.get(0), renderer); // WebGLRenderer - CanvasRenderer
+            continer.css({"right": "0px", "position": "absolute"});
+            update();
+            setTimeout(function () {
+                $('#bubbleAnimation').css('opacity', 1);
+            }, 1);
+        });
+
+        $(document).on('click', '#tik-tak-toe', function (e) {
+            $('#game-select').addClass('go-out-box');
+            $('.main .container-fluid').css({'background': '#3a3d44'});
+            setTimeout(function () {
+                window.location.href = '/game';
+            }, 800);
+            e.preventDefault();
+        });
+    })(jQuery);
+</script>
+</body>
+</html>

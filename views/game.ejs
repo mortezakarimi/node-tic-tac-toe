@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<div class="container-fluid"><h1 id="game-title"><%= title %></h1>
+    <p id="sign" class="sign-container"><span>Your sign is </span><span id="player-sign"></span></p>
+    <h2 id="oWinMessage" class="hidden">You Win</h2>
+    <h2 id="xWinMessage" class="hidden">You Win</h2>
+    <div class="row text-center">
+        <div class="game-container display-inline-block">
+            <div class="container-fluid">
+                <% for (var i = 1, counter = 1;i < 4;i++){ %>
+                <div class="row">
+                    <% for(var j = 1;j < 4;j++, counter++){ %>
+                    <div class="mainBox text-center display-inline-block" id="<%= counter %>">
+                        <% for (var x = 1, counterBox = 1;x < 4;x++){ %>
+                        <div class="row-game">
+                            <% for (var y = 1;y < 4;y++, counterBox++){
+                                var uniqId = counter + '-' + counterBox;
+                            %>
+                            <div class="game-box" data-gameNumber="<%= counter %>" id="<%= uniqId %>" data-uniqId="<%= uniqId %>"></div>
+                            <% } %>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% } %>
+                </div>
+
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<canvas id="c" style="position: absolute;z-index: -1;top:0;"></canvas>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/socket.io-client/socket.io.js"></script>
+<script src="/javascripts/main.js?cr=<%= Math.random() %>"></script>
+</body>
+</html>

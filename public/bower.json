@@ -1,0 +1,23 @@
+{
+  "name": "public",
+  "authors": [
+    "Morteza Karimi <mortezak1373@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "localhost:3000",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "socket.io-client": "^1.4.5",
+    "bootstrap": "^3.3.6"
+  }
+}
